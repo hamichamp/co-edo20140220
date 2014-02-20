@@ -1,0 +1,98 @@
+<html>
+	<head>
+		<script type="text/javascript">
+		(function() {
+			function Working()
+			{
+				this.inTime = 0;
+				this.outTime = 0;
+			}
+
+			Working.prototype.setWorkTime = function(inTime, outTime)
+			{
+				// range 0-24
+				if (inTime < 0 || inTime > 24) {
+					return false;
+				}
+
+				// range 0-24
+				if (outTime < 0 || outTime > 24) {
+					return false;
+				}
+
+				// all night not allowed
+				if (inTime > outTime) {
+					return false;
+				}
+
+				this.inTime = inTime;
+				this.outTime = outTime;
+
+				return true;
+			}
+
+			Working.prototype.getWorkedTime = function()
+			{
+				return this.getTotalTime() - this.getInterval();
+			}
+
+			Working.prototype.getTotalTime = function()
+			{
+				return this.outTime - this.inTime;
+			}
+
+			Working.prototype.getInterval = function()
+			{
+				return parseInt(this.getTotalTime() / 5);
+			}
+
+			//for test
+			var working = new Working();
+
+			//Error case
+			if (working.setWorkTime(-1, 0)) {
+				alert('Error inTime min value');
+			}
+			if (working.setWorkTime(0, -1)) {
+				alert('Error outTime min value');
+			}
+			if (working.setWorkTime(25, 0)) {
+				alert('Error inTime max value');
+			}
+			if (working.setWorkTime(0, 25)) {
+				alert('Error outTime max value');
+			}
+			if (working.setWorkTime(4, 3)) {
+				alert('Error inTime > outTime');
+			}
+
+			//normal case
+			if (working.setWorkTime(10, 14)) {
+				if (working.getWorkedTime() != 4) {
+					alert('Error workedtime 10, 14')
+				}
+			}
+
+			if (working.setWorkTime(10, 15)) {
+				if (working.getWorkedTime() != 4) {
+					alert('Error workedtime 10, 14')
+				}
+			}
+
+			if (working.setWorkTime(10, 19)) {
+				if (working.getWorkedTime() != 8) {
+					alert('Error workedtime 10, 14')
+				}
+			}
+			if (working.setWorkTime(10, 20)) {
+				if (working.getWorkedTime() != 8) {
+					alert('Error workedtime 10, 14')
+				}
+			}
+		})();
+		</script>
+	</head>
+
+	<body>
+	</body>
+</html>
